@@ -1,9 +1,9 @@
-import corpus
+from corpus import Corpus
 
 class BaseFilter:
     def __init__(self, trainFolderPath, testFolderPath):
-        trainCorpus = corpus.Corpus(trainFolderPath)
-        corpus = corpus.Corpus(testFolderPath)
+        trainCorpus = Corpus(trainFolderPath)
+        corpus = Corpus(testFolderPath)
 
     def train(self):
         pass

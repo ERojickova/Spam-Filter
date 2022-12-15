@@ -2,7 +2,8 @@ import email
 import re
 from corpus import Corpus
 
-def PrintHeader(separator, numberOfSeparators, text):
+def printHeader(separator, numberOfSeparators, text):
+    '''Prints a header with a specific string in the terminal'''
     for _ in range(numberOfSeparators):
         print(separator, end='')
     print(f" {text} ", end='')
@@ -18,35 +19,32 @@ def read_classification_from_file(path):
             dict[line[0]] = line[1]
     return dict
 
-def clearMailPrint(msg):
-    PrintHeader('=', 20, msg[0])
+def printCleanedEmail(email):
+    printHeader('=', 20, email[0])
 
-    m = email.message_from_string(msg[1])
+    m = email.message_from_string(email[1])
     
-    PrintHeader('-', 10, "body start")
+    printHeader('-', 10, "body start")
     if(m.is_multipart()):
         for subBody in m.get_payload():
             print(removeTags(subBody.get_payload()))
     else:
         print(removeTags(m.get_payload()))
         
-    PrintHeader('-', 10, "body end")
+    printHeader('-', 10, "body end")
 
 def removeTags(msg):
+    '''Removes the html tags and unnecessary enters from a string using regex'''
     msg = re.sub('<[^<]+?>', '', msg)
-    msg = re.sub('\n\n+', '\n', msg)
+    msg = re.sub('\n+', '\n', msg)
     return msg
 
 
             
 if __name__ == "__main__":
-    c = Corpus("./1")
-    a = c.email()
-
-
-
-    msg = next(a)
-
-    for msg in a:
-        clearMailPrint(msg)
+    corpus1 = Corpus("./1")
+    emailGenerator = corpus1.email()
+    
+    for email in emailGenerator:
+        printCleanedEmail(email)
     
